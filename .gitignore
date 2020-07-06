@@ -1,0 +1,7 @@
+# Project exclude paths
+/leetcode/target/
+/二叉搜素树/target/
+/数组/target/
+/栈/target/
+/链表/target/
+/队列/target/

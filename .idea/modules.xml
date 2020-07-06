@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/leetcode/leetcode.iml" filepath="$PROJECT_DIR$/leetcode/leetcode.iml" />
+      <module fileurl="file://$PROJECT_DIR$/二叉搜素树/二叉搜素树.iml" filepath="$PROJECT_DIR$/二叉搜素树/二叉搜素树.iml" />
+      <module fileurl="file://$PROJECT_DIR$/数组/数组.iml" filepath="$PROJECT_DIR$/数组/数组.iml" />
+      <module fileurl="file://$PROJECT_DIR$/栈/栈.iml" filepath="$PROJECT_DIR$/栈/栈.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/算法与数据结构.iml" filepath="$PROJECT_DIR$/.idea/算法与数据结构.iml" />
+      <module fileurl="file://$PROJECT_DIR$/链表/链表.iml" filepath="$PROJECT_DIR$/链表/链表.iml" />
+      <module fileurl="file://$PROJECT_DIR$/队列/队列.iml" filepath="$PROJECT_DIR$/队列/队列.iml" />
+    </modules>
+  </component>
+</project>
