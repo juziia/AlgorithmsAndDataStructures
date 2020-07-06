@@ -123,32 +123,31 @@ public class BinarySearchTree<E> implements BinaryTreeInfo {
      * 是一颗满二叉树
      * @return
      */
-    public boolean isComplete() {
+    public boolean isComplete(){
         if (root == null) return false;
 
         Queue<Node<E>> queue = new LinkedList<>();
         queue.offer(root);
-        boolean flag = false;
-        while ( ! queue.isEmpty()) {
+        boolean flag = false;     //  记录度为1的节点是否出现
+        while (! queue.isEmpty()) {
             Node<E> node = queue.poll();
 
-            if (flag && !node.isLeaf()) {
+            if (flag && ! node.isLeaf()) {      // 度为1的节点已经出现,接下来的节点则必须是叶子节点
                 return false;
             }
 
-            if (node.left != null && node.right != null) {
+            if (node.left != null && node.right != null){
                 queue.offer(node.left);
                 queue.offer(node.right);
-            } else if (node.left == null && node.right != null) {   // 左节点为空,右节点不为空,这违反了完全二叉树的性质
-                return false;
-            } else if (node.left != null && node.right == null) { // 找到度为1的节点了,那么接下来的节点必须全部是叶子节点
+            }else if (node.left != null && node.right == null) {        // 度为1的节点
                 flag = true;
+            }else if (node.left == null && node.right != null){ // 左子节点为空  右子节点不为空 违反完全二叉树性质
+                return false;
             }
         }
 
         return true;
     }
-
 
     /**
      *  二叉树的高度

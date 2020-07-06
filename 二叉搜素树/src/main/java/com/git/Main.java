@@ -78,7 +78,7 @@ public class Main {
 
     static void test04(){
         int[] arr = new int[]{
-                17,9,25,6,10,20,28,5,8,12
+                17,9,25,6,10,20,28,5,8
         };
 
         BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
