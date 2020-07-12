@@ -78,7 +78,7 @@ public class Main {
 
     static void test04(){
         int[] arr = new int[]{
-                17,9,25,6,10,20,28,5,8
+                17,9,25,6,10,20,28,5
         };
 
         BinarySearchTree<Integer> binarySearchTree = new BinarySearchTree<>();
@@ -90,8 +90,20 @@ public class Main {
 
         System.out.println(binarySearchTree.isComplete());
 
-    }
+        binarySearchTree.inorderTraversal2( i -> System.out.print(i +","));
+        System.out.println("==========================================");
 
+        binarySearchTree.levelOrderTraversal3( i -> System.out.print(i +","));
+
+        System.out.println(binarySearchTree.height2());
+
+        System.out.println(binarySearchTree.isComplete2());
+
+        System.out.println();
+        binarySearchTree.revertTree2();
+        BinaryTrees.println(binarySearchTree);
+
+    }
 
 
     public static void main(String[] args) {
