@@ -7,6 +7,7 @@ import java.util.TreeMap;
 /**
  * 添加看叔父颜色: 是否上溢
  * 删除看兄弟颜色: 是否可以借一个元素出来
+ *
  * @param <E>
  */
 public class RedBlackTree<E> extends BinarySearchTree<E> {
@@ -14,19 +15,20 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
     private static final boolean BLACK = true;
 
     /**
-     *  红黑树添加总结:
-     *          添加共12种情况,12种情况分3类,一类分别4种
-     *
-     *          1. 新添加的节点的父节点是黑色,不需要处理 (4种情况)
-     *          2. 新添加的节点的叔父节点是红色,属于上溢情况,需要对叔父节点,父节点染成黑色,祖父节点染成红色,
-     *            让祖父节点作为一个节点向上合并,合并的逻辑就相当于将祖父当作一个新添加的节点进行处理
-     *          3. 新添加的节点的叔父节点是黑色,这时候就需要进行旋转操作
-     *              如果是LL RR情况: 父节点染成黑色,祖父节点染成红色,祖父节点单旋
-     *              如果是LR RL情况: 自己染成黑色,祖父节点染成红色,父节点旋转,祖父节点旋转
+     * 红黑树添加总结:
+     * 添加共12种情况,12种情况分3类,一类分别4种
+     * <p>
+     * 1. 新添加的节点的父节点是黑色,不需要处理 (4种情况)
+     * 2. 新添加的节点的叔父节点是红色,属于上溢情况,需要对叔父节点,父节点染成黑色,祖父节点染成红色,
+     * 让祖父节点作为一个节点向上合并,合并的逻辑就相当于将祖父当作一个新添加的节点进行处理
+     * 3. 新添加的节点的叔父节点是黑色,这时候就需要进行旋转操作
+     * 如果是LL RR情况: 父节点染成黑色,祖父节点染成红色,祖父节点单旋
+     * 如果是LR RL情况: 自己染成黑色,祖父节点染成红色,父节点旋转,祖父节点旋转
      *
      * @param node
      */
 //    @Override
+    // 递归处理
     protected void afterAdd2(Node<E> node) {
         // 获取新添加节点的父节点
         Node<E> parent = node.parent;
@@ -72,7 +74,7 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
                 black(parent);
                 red(grand);
                 rorateLeft(grand);
-            }else{      // RL
+            } else {      // RL
                 black(node);
                 red(grand);
                 rorateRight(parent);
@@ -83,9 +85,10 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
     }
 
 
+    // 迭代处理
     protected void afterAdd(Node<E> node) {
 
-        // 父节点不为空
+        // 父节点不为空,那么就进行循环
         while (node.parent != null) {
             Node<E> parent = node.parent;
 
@@ -102,9 +105,9 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
                 black(uncle);
                 black(parent);
                 red(grand);
-
+                // 将祖父节点作为一个被添加的节点进行处理(向上合并)
                 node = grand;
-                continue;
+                continue;   // 进行下一次循环
             }
             // 叔父节点是黑色
             //这时候就需要判断是LL RR LR RL中的情况了
@@ -134,7 +137,7 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
                     rorateLeft(grand);
                 }
             }
-            // 只要旋转完毕,证明此红黑树已经修复完成,直接退出循环
+            // 只要执行到这里,证明旋转完毕,此时红黑树已经修复完成,直接退出循环
             break;
         }
         // 获取新添加节点的父节点
@@ -147,53 +150,50 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
 
 
     /**
-     *  删除总结:
-     *      1. 如果删除的是红色叶子节点,不需要处理
-     *      2. 如果删除节点的替代节点是红色,染黑即可
-     *      3. 如果删除的节点的父节点是null,不需要处理
-     *      4. 如果删除的是黑色节点,那么就需要判断删除的是其父节点的哪个子节点
-     *          1) 删除的是右边
-     *              A) 判断它的兄弟节点是否是红色
-     *                 a) 如果兄弟节点是红色: 属于下溢情况,父节点向下与子节点进行合并,那么需要将它的兄弟节点染黑,
-     *               父节点染红,对父节点进行右旋转,此时被删除的兄弟节点就是父节点的左子节点,并且必然是黑色,
-     *               因为原兄弟节点的颜色是红色,那么它的子节点必然是黑色,所以当父节点右旋转后,父节点的左子节点
-     *               会指向原兄弟节点的右子节点,那么新的兄弟节点就是父节点的左子节点
+     * 删除总结:
+     * 1. 如果删除的是红色叶子节点,不需要处理
+     * 2. 如果删除节点的替代节点是红色,染黑即可
+     * 3. 如果删除的节点的父节点是null,不需要处理
+     * 4. 如果删除的是黑色节点,那么就需要判断删除的是其父节点的哪个子节点
+     * 1) 删除的是右边
+     * A) 判断它的兄弟节点是否是红色
+     * a) 如果兄弟节点是红色: 属于下溢情况,父节点向下与子节点进行合并,那么需要将它的兄弟节点染黑,
+     * 父节点染红,对父节点进行右旋转,此时被删除的兄弟节点就是父节点的左子节点,并且必然是黑色,
+     * 因为原兄弟节点的颜色是红色,那么它的子节点必然是黑色,所以当父节点右旋转后,父节点的左子节点
+     * 会指向原兄弟节点的右子节点,那么新的兄弟节点就是父节点的左子节点
+     * <p>
+     * b) 如果兄弟节点是黑色: 则有两种情况
+     * ①: 兄弟节点的左右子节点都是黑色,没有红色叶子节点(兄弟节点没有节点可以借,父节点需要与子节点合并)
+     * 判断父节点的颜色是否是黑色
+     * 不是黑色: ,那么将兄弟节点染红,父节点染黑
+     * 是黑色: 那么将兄弟节点染红,父节点染黑,将父节点当作被删除的节点重新处理
+     * 原因: 因为如果父节点本来就是黑色,那么将兄弟节点染黑,父节点染红,向下合并,原来的父节点就
+     * 产生下溢情况,为了解决父节点产生下溢情况,需要将它当作删除的节点重新处理
+     * <p>
+     * ②:  兄弟节点存在红色子节点
+     * a) 兄弟节点的左边是黑色,需要先处理一下
+     * 原因: 兄弟节点的左边是黑色,那么红色节点必然在兄弟节点的右边,为了与后面逻辑统一,需要先对其处理
+     * <p>
+     * 处理方式: 将兄弟节点左旋转, 此时被删除的节点的兄弟节点是其父节点的左子节点,需要重新赋值
+     * b) 兄弟节点的左边必然是红色子节点(经过了上面的处理)
+     * 旋转之后的中心节点(兄弟节点)继承其父节点的颜色,再将其左右子节点染黑
+     * 兄弟节点染黑, 对父节点右旋转, 再对兄弟节点的左右子节点染黑
+     * <p>
+     * <p>
+     * 1) 删除的是左边
+     * 与上面的左右子节点,旋转方向相反即可,逻辑相同
      *
-     *                 b) 如果兄弟节点是黑色: 则有两种情况
-     *                      ①: 兄弟节点的左右子节点都是黑色,没有红色叶子节点(兄弟节点没有节点可以借,父节点需要与子节点合并)
-     *                          判断父节点的颜色是否是黑色
-     *                              不是黑色: ,那么将兄弟节点染红,父节点染黑
-     *                              是黑色: 那么将兄弟节点染红,父节点染黑,将父节点当作被删除的节点重新处理
-     *                                  原因: 因为如果父节点本来就是黑色,那么将兄弟节点染黑,父节点染红,向下合并,原来的父节点就
-     *                                      产生下溢情况,为了解决父节点产生下溢情况,需要将它当作删除的节点重新处理
-     *
-     *                      ②:  兄弟节点存在红色子节点
-     *                          a) 兄弟节点的左边是黑色,需要先处理一下
-     *                              原因: 兄弟节点的左边是黑色,那么红色节点必然在兄弟节点的右边,为了与后面逻辑统一,需要先对其处理
-     *
-     *                             处理方式: 将兄弟节点左旋转, 此时被删除的节点的兄弟节点是其父节点的左子节点,需要重新赋值
-     *                          b) 兄弟节点的左边必然是红色子节点(经过了上面的处理)
-     *                               旋转之后的中心节点(兄弟节点)继承其父节点的颜色,再将其左右子节点染黑
-     *                                  兄弟节点染黑, 对父节点右旋转, 再对兄弟节点的左右子节点染黑
-     *
-     *
-     *          1) 删除的是左边
-     *              与上面的左右子节点,旋转方向相反即可,逻辑相同
-     *
-     *
-     *
-     *
-     *
-     * @param node 被删除的节点
-     * @param replacement    替代节点
+     * @param node        被删除的节点
+     * @param replacement 替代节点
      */
-    @Override
-    protected void afterRemove(Node<E> node, Node<E> replacement) {
+//    @Override
+    // 属于递归处理
+    protected void afterRemove2(Node<E> node, Node<E> replacement) {
         // 删除的是红色子节点不需要处理 (红色节点必然是叶子节点)
         if (isRed(node)) return;
 
         // 如果替代节点是红色,将其染成黑色
-        if (isRed(replacement)){
+        if (isRed(replacement)) {
             black(replacement);
             return;
         }
@@ -236,9 +236,9 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
                 black(parent);
                 if (parentBlack) {
                     // 原来的父节点是黑色, 向下合并之后原来的节点就下溢了,这时候就将父节点作为一个被删除的节点处理
-                    afterRemove(parent,null);
+                    afterRemove(parent, null);
                 }
-            }else {
+            } else {
                 // 兄弟节点存在红色子节点
                 if (isBlack(sibling.right)) {
                     // 兄弟节点的左边为黑色, 那么红色节点在兄弟节点的右边
@@ -249,12 +249,12 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
 
                 // 红色子节点必然存在于兄弟节点的左边
 
-                color(sibling,colorOf(parent));
+                color(sibling, colorOf(parent));
                 rorateLeft(parent);
                 black(sibling.left);
                 black(sibling.right);
             }
-        }else{
+        } else {
             // 删除的是右边
 
             // 判断兄弟节点是红色
@@ -284,9 +284,9 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
                 black(parent);
                 if (parentBlack) {
                     // 原来的父节点是黑色, 向下合并之后原来的节点就下溢了,这时候就将父节点作为一个被删除的节点处理
-                    afterRemove(parent,null);
+                    afterRemove(parent, null);
                 }
-            }else {
+            } else {
                 // 兄弟节点存在红色子节点
                 if (isBlack(sibling.left)) {
                     // 兄弟节点的左边为黑色, 那么红色节点在兄弟节点的右边
@@ -297,17 +297,139 @@ public class RedBlackTree<E> extends BinarySearchTree<E> {
 
                 // 红色子节点必然存在于兄弟节点的左边
 
-                color(sibling,colorOf(parent));
+                color(sibling, colorOf(parent));
                 rorateRight(parent);
                 black(sibling.left);
                 black(sibling.right);
             }
 
         }
+    }
+    // 迭代处理
+    protected void afterRemove(Node<E> node, Node<E> replacement) {
+        while (node != null) {
+            // 删除的是红色子节点不需要处理 (红色节点必然是叶子节点)
+            if (isRed(node)) return;
 
+            // 如果替代节点是红色,将其染成黑色
+            if (isRed(replacement)) {
+                black(replacement);
+                break;
+            }
 
+            Node<E> parent = node.parent;
+            if (parent == null) break;     // 根节点
 
+            // 删除的是父节点的左还是右
+            boolean left = parent.left == null || node.isLeftChildren();
+            // 获取兄弟节点
+            Node<E> sibling = left ? parent.right : parent.left;
 
+            if (left) {
+                // 删除的是左边
+
+                // 判断兄弟节点是红色
+                if (isRed(sibling)) {
+                    /**
+                     *  这里主要的逻辑是:
+                     *      兄弟节点是红色, 那么它的两个子节点必然是黑色,我们就将兄弟节点染成黑色,父节点染成红色
+                     *     对父节点进行右旋转, 那么父节点的左边就指向了兄弟节点的右边,此时被删除的节点的兄弟节点就是
+                     *     父节点的左子节点
+                     */
+                    // 兄弟节点是红色
+                    // 将兄弟节点染黑, 父节点染成红色
+                    black(sibling);
+                    red(parent);
+                    // 将父节点右旋转
+                    rorateLeft(parent);
+                    // 更改兄弟节点
+                    sibling = parent.right;
+                }
+
+                // 判断兄弟是否有红色子节点
+                if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                    // 兄弟节点的左右子节点都为黑色  属于下溢情况
+                    // 如果原来的父节点为黑色, 那么父节点向下合并之后,原父节点又产生下溢
+                    boolean parentBlack = isBlack(parent);
+                    red(sibling);
+                    black(parent);
+                    if (parentBlack) {
+                        // 原来的父节点是黑色, 向下合并之后原来的节点就下溢了,这时候就将父节点作为一个被删除的节点处理
+//                        afterRemove(parent, null);
+                        node = parent;
+                        continue;
+                    }
+                } else {
+                    // 兄弟节点存在红色子节点
+                    if (isBlack(sibling.right)) {
+                        // 兄弟节点的左边为黑色, 那么红色节点在兄弟节点的右边
+                        // 对兄弟节点进行左旋转
+                        rorateRight(sibling);
+                        sibling = parent.right;
+                    }
+
+                    // 红色子节点必然存在于兄弟节点的左边
+
+                    color(sibling, colorOf(parent));
+                    rorateLeft(parent);
+                    black(sibling.left);
+                    black(sibling.right);
+                }
+                break;
+            } else {
+                // 删除的是右边
+
+                // 判断兄弟节点是红色
+                if (isRed(sibling)) {
+                    /**
+                     *  这里主要的逻辑是:
+                     *      兄弟节点是红色, 那么它的两个子节点必然是黑色,我们就将兄弟节点染成黑色,父节点染成红色
+                     *     对父节点进行右旋转, 那么父节点的左边就指向了兄弟节点的右边,此时被删除的节点的兄弟节点就是
+                     *     父节点的左子节点
+                     */
+                    // 兄弟节点是红色
+                    // 将兄弟节点染黑, 父节点染成红色
+                    black(sibling);
+                    red(parent);
+                    // 将父节点右旋转
+                    rorateRight(parent);
+                    // 更改兄弟节点
+                    sibling = parent.left;
+                }
+
+                // 判断兄弟是否有红色子节点
+                if (isBlack(sibling.left) && isBlack(sibling.right)) {
+                    // 兄弟节点的左右子节点都为黑色  属于下溢情况
+                    // 如果原来的父节点为黑色, 那么父节点向下合并之后,原父节点又产生下溢
+                    boolean parentBlack = isBlack(parent);
+                    red(sibling);
+                    black(parent);
+                    if (parentBlack) {
+                        // 原来的父节点是黑色, 向下合并之后原来的节点就下溢了,这时候就将父节点作为一个被删除的节点处理
+//                        afterRemove(parent, null);
+                        node = parent;
+                        continue;
+                    }
+                } else {
+                    // 兄弟节点存在红色子节点
+                    if (isBlack(sibling.left)) {
+                        // 兄弟节点的左边为黑色, 那么红色节点在兄弟节点的右边
+                        // 对兄弟节点进行左旋转
+                        rorateLeft(sibling);
+                        sibling = parent.left;
+                    }
+
+                    // 红色子节点必然存在于兄弟节点的左边
+
+                    color(sibling, colorOf(parent));
+                    rorateRight(parent);
+                    black(sibling.left);
+                    black(sibling.right);
+
+                }
+                break;
+            }
+        }
 
     }
 

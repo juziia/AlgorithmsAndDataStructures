@@ -12,15 +12,17 @@
         <module name="队列" />
         <module name="链表" />
         <module name="leetcode" />
+        <module name="集合" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
-      <module name="leetcode" target="8" />
+      <module name="leetcode" target="1.5" />
       <module name="二叉搜素树" target="8" />
-      <module name="数组" target="8" />
-      <module name="栈" target="8" />
-      <module name="链表" target="8" />
-      <module name="队列" target="8" />
+      <module name="数组" target="1.5" />
+      <module name="栈" target="1.5" />
+      <module name="链表" target="1.5" />
+      <module name="队列" target="1.5" />
+      <module name="集合" target="7" />
     </bytecodeTargetLevel>
   </component>
 </project>

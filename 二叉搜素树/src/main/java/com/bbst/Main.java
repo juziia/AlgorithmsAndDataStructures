@@ -36,23 +36,26 @@ public class Main {
     }
 
     static void test02() {
-        int[] arr = {
-                34, 45, 35, 21, 78, 41, 63, 51, 90, 92, 7, 66, 16, 80, 22, 26, 33, 44,
-                88, 25, 69, 96, 18, 20, 99, 26, 76, 93, 61, 94, 17, 32, 43, 48, 65
-        };
+//        int[] arr = {
+////                34, 45, 35, 21, 78, 41, 63, 51, 90, 92, 7, 66, 16, 80, 22, 26, 33, 44,
+////                88, 25, 69, 96, 18, 20, 99, 26, 76, 93, 61, 94, 17, 32, 43, 48, 65,
+////                61, 32, 65, 68, 33, 24, 19, 80, 26, 87, 47, 43, 85, 39
+////        };
 
+        int[] arr = {
+                58, 74, 81, 22, 77, 41, 69, 96, 51, 8, 100, 29, 26, 16, 5, 62, 55, 20, 85, 15, 37, 12, 48, 63, 9, 78, 47, 42, 66, 21, 33, 30, 90, 59, 6, 40, 10, 53, 91, 17, 79, 64, 2, 97, 38, 39, 7, 98, 87        };
         RedBlackTree<Integer> rbTree = new RedBlackTree<>();
         for (int i = 0; i < arr.length; i++) {
             rbTree.add(arr[i]);
         }
         BinaryTrees.println(rbTree);
-
-//        for (int i = 0; i < arr.length; i++) {
-//            System.out.println(arr[i]);
-//            rbTree.remove(arr[i]);
-//            BinaryTrees.println(rbTree);
-//            System.out.println("======================================");
-//        }
+        System.out.println("====================================");
+        for (int i = 0; i < arr.length; i++) {
+            System.out.println(arr[i]);
+            rbTree.remove(arr[i]);
+            BinaryTrees.println(rbTree);
+            System.out.println("======================================");
+        }
 
     }
 
